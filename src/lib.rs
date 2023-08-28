@@ -1,34 +1,89 @@
 use reqwest::blocking::Client;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::error::Error;
+use typed_builder::TypedBuilder;
 
 const API_BASE_URL: &str = "https://api.ouraring.com/v2/usercollection";
 
 #[derive(Deserialize, Debug)]
-pub struct ListResponse<T> {
-    pub data: Vec<T>,
-    pub next_token: Option<String>,
+pub struct Sample {
+    pub interval: f32,
+    pub items: Vec<Option<f32>>,
+    pub timestamp: String,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct PersonalInfo {
+pub struct ActivityContributors {
+    pub meet_daily_targets: Option<u8>,
+    pub move_every_hour: Option<u8>,
+    pub recovery_time: Option<u8>,
+    pub stay_active: Option<u8>,
+    pub training_frequency: Option<u8>,
+    pub training_volume: Option<u8>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct DailyActivity {
     pub id: String,
-    pub age: u8,
-    pub weight: f64,
-    pub height: f64,
-    pub biological_sex: String,
-    pub email: String,
+    pub class_5_min: Option<String>,
+    pub score: Option<u8>,
+    pub active_calories: u32,
+    pub average_met_minutes: f32,
+    pub contributors: ActivityContributors,
+    pub equivalent_walking_distance: u32,
+    pub high_activity_met_minutes: u32,
+    pub high_activity_time: u32,
+    pub inactivity_alerts: u32,
+    pub low_activity_met_minutes: u32,
+    pub low_activity_time: u32,
+    pub medium_activity_met_minutes: u32,
+    pub medium_activity_time: u32,
+    pub met: Sample,
+    pub meters_to_target: u32,
+    pub non_wear_time: u32,
+    pub resting_time: u32,
+    pub sedentary_met_minutes: u32,
+    pub sedentary_time: u32,
+    pub steps: u32,
+    pub target_calories: u32,
+    pub target_meters: u32,
+    pub total_calories: u32,
+    pub day: String,
+    pub timestamp: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct ReadinessContributors {
+    pub activity_balance: Option<u8>,
+    pub body_temperature: Option<u8>,
+    pub hrv_balance: Option<u8>,
+    pub previous_day_activity: Option<u8>,
+    pub previous_night: Option<u8>,
+    pub recovery_index: Option<u8>,
+    pub resting_heart_rate: Option<u8>,
+    pub sleep_balance: Option<u8>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct DailyReadiness {
+    pub id: String,
+    pub contributors: ReadinessContributors,
+    pub day: String,
+    pub score: Option<u8>,
+    pub temperature_deviation: Option<f32>,
+    pub temperature_trend_deviation: Option<f32>,
+    pub timestamp: String,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct SleepContributors {
-    pub deep_sleep: u8,
-    pub efficiency: u8,
-    pub latency: u8,
-    pub rem_sleep: u8,
-    pub restfulness: u8,
-    pub timing: u8,
-    pub total_sleep: u8,
+    pub deep_sleep: Option<u8>,
+    pub efficiency: Option<u8>,
+    pub latency: Option<u8>,
+    pub rem_sleep: Option<u8>,
+    pub restfulness: Option<u8>,
+    pub timing: Option<u8>,
+    pub total_sleep: Option<u8>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -37,30 +92,50 @@ pub struct DailySleep {
     pub contributors: SleepContributors,
     pub day: String,
     pub timestamp: String,
-    pub score: u8,
+    pub score: Option<u8>,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct ReadinessContributors {
-    pub activity_balance: u8,
-    pub body_temperature: u8,
-    pub hrv_balance: u8,
-    pub previous_day_activity: u8,
-    pub previous_night: u8,
-    pub recovery_index: u8,
-    pub resting_heart_rate: u8,
-    pub sleep_balance: u8,
-}
-
-#[derive(Deserialize, Debug)]
-pub struct DailyReadiness {
-    pub id: String,
-    pub contributors: ReadinessContributors,
-    pub day: String,
-    pub score: u8,
-    pub temperature_deviation: f64,
-    pub temperature_trend_deviation: f64,
+pub struct HeartRate {
+    pub bpm: u8,
+    pub source: String,
     pub timestamp: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct PersonalInfo {
+    pub id: String,
+    pub age: Option<u32>,
+    pub weight: Option<f32>,
+    pub height: Option<f32>,
+    pub biological_sex: Option<String>,
+    pub email: Option<String>,
+}
+
+#[derive(Serialize, TypedBuilder)]
+pub struct DateQuery {
+    #[builder(default = None, setter(strip_option))]
+    start_date: Option<String>,
+    #[builder(default = None, setter(strip_option))]
+    end_date: Option<String>,
+    #[builder(default = None, setter(strip_option))]
+    next_token: Option<String>,
+}
+
+#[derive(Serialize, TypedBuilder)]
+pub struct DatetimeQuery {
+    #[builder(default = None, setter(strip_option))]
+    start_datetime: Option<String>,
+    #[builder(default = None, setter(strip_option))]
+    end_datetime: Option<String>,
+    #[builder(default = None, setter(strip_option))]
+    next_token: Option<String>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct ListResponse<T> {
+    pub data: Vec<T>,
+    pub next_token: Option<String>,
 }
 
 macro_rules! generic_endpoint {
@@ -79,13 +154,14 @@ macro_rules! generic_endpoint {
 }
 
 macro_rules! list_endpoint {
-    ($name: ident, $type: ty, $path: literal) => {
-        pub fn $name(&self) -> Result<ListResponse<$type>, Box<dyn Error>> {
+    ($name: ident, $type: ty, $path: literal, $params: ty) => {
+        pub fn $name(&self, params: $params) -> Result<ListResponse<$type>, Box<dyn Error>> {
             let url = format!("{}/{}", API_BASE_URL, $path);
             let response = self
                 .client
                 .get(&url)
                 .bearer_auth(&self.token)
+                .query(&params)
                 .send()?
                 .json::<ListResponse<$type>>()?;
             Ok(response)
@@ -119,11 +195,26 @@ impl<'a> OuraClient<'a> {
         Self { token, client }
     }
 
-    generic_endpoint!(get_personal_info, PersonalInfo, "personal_info");
+    list_endpoint!(
+        list_daily_activity,
+        DailyActivity,
+        "daily_activity",
+        DateQuery
+    );
+    get_endpoint!(get_daily_activity, DailyActivity, "daily_activity");
 
-    list_endpoint!(list_daily_sleep, DailySleep, "daily_sleep");
+    list_endpoint!(
+        list_daily_readiness,
+        DailyReadiness,
+        "daily_readiness",
+        DateQuery
+    );
+    get_endpoint!(get_daily_readiness, DailyReadiness, "daily_readiness");
+
+    list_endpoint!(list_daily_sleep, DailySleep, "daily_sleep", DateQuery);
     get_endpoint!(get_daily_sleep, DailySleep, "daily_sleep");
 
-    list_endpoint!(list_daily_readiness, DailyReadiness, "daily_readiness");
-    get_endpoint!(get_daily_readiness, DailyReadiness, "daily_readiness");
+    list_endpoint!(list_heart_rate, HeartRate, "heartrate", DatetimeQuery);
+
+    generic_endpoint!(get_personal_info, PersonalInfo, "personal_info");
 }
