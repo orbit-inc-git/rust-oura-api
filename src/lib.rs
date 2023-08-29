@@ -96,6 +96,18 @@ pub struct DailySleep {
 }
 
 #[derive(Deserialize, Debug)]
+pub struct DailySpO2AggregatedValues {
+    pub average: f32,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct DailySpO2 {
+    pub id: String,
+    pub day: String,
+    pub spo2_percentage: Option<DailySpO2AggregatedValues>,
+}
+
+#[derive(Deserialize, Debug)]
 pub struct HeartRate {
     pub bpm: u8,
     pub source: String,
@@ -110,6 +122,22 @@ pub struct PersonalInfo {
     pub height: Option<f32>,
     pub biological_sex: Option<String>,
     pub email: Option<String>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct RestModeEpisode {
+    pub tags: Vec<String>,
+    pub timestamp: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct RestModePeriod {
+    pub id: String,
+    pub end_day: Option<String>,
+    pub end_time: Option<String>,
+    pub episodes: Vec<RestModeEpisode>,
+    pub start_day: String,
+    pub start_time: String,
 }
 
 #[derive(Serialize, TypedBuilder)]
@@ -214,7 +242,18 @@ impl<'a> OuraClient<'a> {
     list_endpoint!(list_daily_sleep, DailySleep, "daily_sleep", DateQuery);
     get_endpoint!(get_daily_sleep, DailySleep, "daily_sleep");
 
+    list_endpoint!(list_daily_spo2, DailySpO2, "daily_spo2", DateQuery);
+    get_endpoint!(get_daily_spo2, DailySpO2, "daily_spo2");
+
     list_endpoint!(list_heart_rate, HeartRate, "heartrate", DatetimeQuery);
 
     generic_endpoint!(get_personal_info, PersonalInfo, "personal_info");
+
+    list_endpoint!(
+        list_rest_mode_period,
+        RestModePeriod,
+        "rest_mode_period",
+        DateQuery
+    );
+    get_endpoint!(get_rest_mode_period, RestModePeriod, "rest_mode_period");
 }
