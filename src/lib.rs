@@ -140,24 +140,154 @@ pub struct RestModePeriod {
     pub start_time: String,
 }
 
-#[derive(Serialize, TypedBuilder)]
-pub struct DateQuery {
-    #[builder(default = None, setter(strip_option))]
-    start_date: Option<String>,
-    #[builder(default = None, setter(strip_option))]
-    end_date: Option<String>,
-    #[builder(default = None, setter(strip_option))]
-    next_token: Option<String>,
+// TODO: Ring Configuration
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum MomentType {
+    Breathing,
+    Meditation,
+    Nap,
+    Relaxation,
+    Rest,
+    BodyStatus,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum MomentMood {
+    Bad,
+    Worse,
+    Same,
+    Good,
+    Great,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Session {
+    pub id: String,
+    pub day: String,
+    pub start_datetime: String,
+    pub end_datetime: String,
+    pub r#type: MomentType,
+    pub heart_rate: Option<Sample>,
+    pub heart_rate_variability: Option<Sample>,
+    pub mood: Option<MomentMood>,
+    pub motion_count: Option<Sample>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct ReadinessSummary {
+    pub contributors: ReadinessContributors,
+    pub score: Option<u8>,
+    pub temperature_devation: Option<f32>,
+    pub temperature_trend_deviation: Option<f32>,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "lowercase")]
+pub enum SleepAlgorithmVersion {
+    V1,
+    V2,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum SleepType {
+    Deleted,
+    Sleep,
+    LongSleep,
+    LateNap,
+    Rest,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Sleep {
+    pub id: String,
+    pub average_breath: Option<f32>,
+    pub average_heart_rate: Option<f32>,
+    pub average_hrv: Option<u32>,
+    pub awake_time: Option<u32>,
+    pub bedtime_end: String,
+    pub bedtime_start: String,
+    pub day: String,
+    pub deep_sleep_duration: Option<u32>,
+    pub efficiency: Option<u8>,
+    pub heart_rate: Option<Sample>,
+    pub hrv: Option<Sample>,
+    pub latency: Option<u32>,
+    pub light_sleep_duration: Option<u32>,
+    pub low_battery_alert: bool,
+    pub lowest_heart_rate: Option<u32>,
+    pub movement_30_sec: Option<String>,
+    pub period: u32,
+    pub readiness: Option<ReadinessSummary>,
+    pub readiness_score_delta: Option<u8>,
+    pub rem_sleep_duration: Option<u32>,
+    pub restless_periods: Option<u32>,
+    pub sleep_phase_5_min: Option<String>,
+    pub sleep_score_delta: Option<u8>,
+    pub sleep_algorithm_version: Option<SleepAlgorithmVersion>,
+    pub time_in_bed: u32,
+    pub total_sleep_duration: Option<u32>,
+    pub r#type: SleepType,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct SleepTimeWindow {
+    pub day_tz: u32,
+    pub end_offset: u32,
+    pub start_offset: u32,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum SleepTimeRecommendation {
+    ImproveEfficiency,
+    EarlierBedtime,
+    LaterBedtime,
+    EarlierWakeUpTime,
+    LaterWakeUpTime,
+    FollowOptimalBedtime,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum SleepTimeStatus {
+    NoteEnoughNights,
+    NotEnoughRecentNights,
+    BadSleepQuality,
+    OnlyRecommendedFound,
+    OptimalFound,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct SleepTime {
+    pub id: String,
+    pub day: String,
+    pub optimal_bedtime: Option<SleepTimeWindow>,
+    pub recommendation: Option<SleepTimeRecommendation>,
+    pub status: Option<SleepTimeStatus>,
 }
 
 #[derive(Serialize, TypedBuilder)]
-pub struct DatetimeQuery {
+pub struct DateQuery<'a> {
     #[builder(default = None, setter(strip_option))]
-    start_datetime: Option<String>,
+    start_date: Option<&'a str>,
     #[builder(default = None, setter(strip_option))]
-    end_datetime: Option<String>,
+    end_date: Option<&'a str>,
     #[builder(default = None, setter(strip_option))]
-    next_token: Option<String>,
+    next_token: Option<&'a str>,
+}
+
+#[derive(Serialize, TypedBuilder)]
+pub struct DatetimeQuery<'a> {
+    #[builder(default = None, setter(strip_option))]
+    start_datetime: Option<&'a str>,
+    #[builder(default = None, setter(strip_option))]
+    end_datetime: Option<&'a str>,
+    #[builder(default = None, setter(strip_option))]
+    next_token: Option<&'a str>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -256,4 +386,15 @@ impl<'a> OuraClient<'a> {
         DateQuery
     );
     get_endpoint!(get_rest_mode_period, RestModePeriod, "rest_mode_period");
+
+    // TODO: Ring Configuration
+
+    list_endpoint!(list_session, Session, "session", DateQuery);
+    get_endpoint!(get_session, Session, "session");
+
+    list_endpoint!(list_sleep, Sleep, "sleep", DateQuery);
+    get_endpoint!(get_sleep, Sleep, "sleep");
+
+    list_endpoint!(list_sleep_time, SleepTime, "sleep_time", DateQuery);
+    get_endpoint!(get_sleep_time, SleepTime, "sleep_time");
 }
