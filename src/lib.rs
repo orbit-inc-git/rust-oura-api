@@ -141,7 +141,42 @@ pub struct RestModePeriod {
     pub start_time: String,
 }
 
-// TODO: Ring Configuration
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum RingColor {
+    GlossyBlack,
+    StealthBlack,
+    Rose,
+    Silver,
+    GlossyGold,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum RingDesign {
+    Heritage,
+    Horizon,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum RingHardwareType {
+    Gen1,
+    Gen2,
+    Gen2m,
+    Gen3,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct RingConfiguration {
+    pub id: String,
+    pub color: Option<RingColor>,
+    pub design: Option<RingDesign>,
+    pub firmware_version: Option<String>,
+    pub hardware_type: Option<RingHardwareType>,
+    pub set_up_at: Option<String>,
+    pub size: Option<u32>,
+}
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "snake_case")]
@@ -271,6 +306,57 @@ pub struct SleepTime {
     pub status: Option<SleepTimeStatus>,
 }
 
+#[derive(Deserialize, Debug)]
+pub struct Tag {
+    pub id: String,
+    pub day: String,
+    pub text: Option<String>,
+    pub timestamp: String,
+    pub tags: Vec<String>,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum WorkoutIntensity {
+    Easy,
+    Moderate,
+    Hard,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum WorkoutSource {
+    Manual,
+    Autodetected,
+    Confirmed,
+    WorkoutHeartRate,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Workout {
+    pub id: String,
+    pub activity: String,
+    pub calories: Option<f32>,
+    pub day: String,
+    pub distance: Option<f32>,
+    pub end_datetime: String,
+    pub intensity: WorkoutIntensity,
+    pub label: Option<String>,
+    pub source: WorkoutSource,
+    pub start_datetime: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct TagV2 {
+    pub id: String,
+    pub tag_type_code: Option<String>,
+    pub start_time: String,
+    pub end_time: Option<String>,
+    pub start_day: String,
+    pub end_day: Option<String>,
+    pub comment: Option<String>,
+}
+
 #[derive(Serialize, TypedBuilder)]
 pub struct DateQuery<'a> {
     #[builder(default = None, setter(strip_option))]
@@ -387,11 +473,22 @@ impl<'a> OuraClient<'a> {
         DateQuery
     );
 
-    // TODO: Ring Configuration
+    endpoint_set!(
+        ring_configuration,
+        RingConfiguration,
+        "ring_configuration",
+        DateQuery
+    );
 
     endpoint_set!(session, Session, "session", DateQuery);
 
     endpoint_set!(sleep, Sleep, "sleep", DateQuery);
 
     endpoint_set!(sleep_time, SleepTime, "sleep_time", DateQuery);
+
+    endpoint_set!(tag, Tag, "tag", DateQuery);
+
+    endpoint_set!(workout, Workout, "workout", DateQuery);
+
+    endpoint_set!(tag_v2, TagV2, "tag/v2", DateQuery);
 }
