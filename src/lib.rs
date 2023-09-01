@@ -1,3 +1,4 @@
+use paste::paste;
 use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
@@ -342,6 +343,15 @@ macro_rules! get_endpoint {
     };
 }
 
+macro_rules! endpoint_set {
+    ($name: ident, $type: ty, $path: literal, $params: ty) => {
+        paste! {
+            get_endpoint!([<get_ $name>], $type, $path);
+            list_endpoint!([<list_ $name>], $type, $path, $params);
+        }
+    };
+}
+
 pub struct OuraClient<'a> {
     token: &'a str,
     client: Client,
@@ -353,48 +363,35 @@ impl<'a> OuraClient<'a> {
         Self { token, client }
     }
 
-    list_endpoint!(
-        list_daily_activity,
-        DailyActivity,
-        "daily_activity",
-        DateQuery
-    );
-    get_endpoint!(get_daily_activity, DailyActivity, "daily_activity");
+    endpoint_set!(daily_activity, DailyActivity, "daily_activity", DateQuery);
 
-    list_endpoint!(
-        list_daily_readiness,
+    endpoint_set!(
+        daily_readiness,
         DailyReadiness,
         "daily_readiness",
         DateQuery
     );
-    get_endpoint!(get_daily_readiness, DailyReadiness, "daily_readiness");
 
-    list_endpoint!(list_daily_sleep, DailySleep, "daily_sleep", DateQuery);
-    get_endpoint!(get_daily_sleep, DailySleep, "daily_sleep");
+    endpoint_set!(daily_sleep, DailySleep, "daily_sleep", DateQuery);
 
-    list_endpoint!(list_daily_spo2, DailySpO2, "daily_spo2", DateQuery);
-    get_endpoint!(get_daily_spo2, DailySpO2, "daily_spo2");
+    endpoint_set!(daily_spo2, DailySpO2, "daily_spo2", DateQuery);
 
     list_endpoint!(list_heart_rate, HeartRate, "heartrate", DatetimeQuery);
 
     generic_endpoint!(get_personal_info, PersonalInfo, "personal_info");
 
-    list_endpoint!(
-        list_rest_mode_period,
+    endpoint_set!(
+        rest_mode_period,
         RestModePeriod,
         "rest_mode_period",
         DateQuery
     );
-    get_endpoint!(get_rest_mode_period, RestModePeriod, "rest_mode_period");
 
     // TODO: Ring Configuration
 
-    list_endpoint!(list_session, Session, "session", DateQuery);
-    get_endpoint!(get_session, Session, "session");
+    endpoint_set!(session, Session, "session", DateQuery);
 
-    list_endpoint!(list_sleep, Sleep, "sleep", DateQuery);
-    get_endpoint!(get_sleep, Sleep, "sleep");
+    endpoint_set!(sleep, Sleep, "sleep", DateQuery);
 
-    list_endpoint!(list_sleep_time, SleepTime, "sleep_time", DateQuery);
-    get_endpoint!(get_sleep_time, SleepTime, "sleep_time");
+    endpoint_set!(sleep_time, SleepTime, "sleep_time", DateQuery);
 }
