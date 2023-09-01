@@ -386,7 +386,7 @@ pub struct ListResponse<T> {
 macro_rules! generic_endpoint {
     ($name: ident, $type: ty, $path: literal) => {
         pub fn $name(&self) -> Result<$type, Box<dyn Error>> {
-            let url = format!("{}/{}", API_BASE_URL, $path);
+            let url = format!("{}/{}", &self.base_url, $path);
             let response = self
                 .client
                 .get(&url)
@@ -401,7 +401,7 @@ macro_rules! generic_endpoint {
 macro_rules! list_endpoint {
     ($name: ident, $type: ty, $path: literal, $params: ty) => {
         pub fn $name(&self, params: $params) -> Result<ListResponse<$type>, Box<dyn Error>> {
-            let url = format!("{}/{}", API_BASE_URL, $path);
+            let url = format!("{}/{}", &self.base_url, $path);
             let response = self
                 .client
                 .get(&url)
@@ -417,7 +417,7 @@ macro_rules! list_endpoint {
 macro_rules! get_endpoint {
     ($name: ident, $type: ty, $path: literal) => {
         pub fn $name(&self, id: &str) -> Result<$type, Box<dyn Error>> {
-            let url = format!("{}/{}/{}", API_BASE_URL, $path, id);
+            let url = format!("{}/{}/{}", &self.base_url, $path, id);
             let response = self
                 .client
                 .get(&url)
@@ -440,13 +440,27 @@ macro_rules! endpoint_set {
 
 pub struct OuraClient<'a> {
     token: &'a str,
+    base_url: &'a str,
     client: Client,
 }
 
 impl<'a> OuraClient<'a> {
-    pub fn build(token: &'a str) -> Self {
+    pub fn new(token: &'a str) -> Self {
         let client = Client::new();
-        Self { token, client }
+        Self {
+            token,
+            client,
+            base_url: API_BASE_URL,
+        }
+    }
+
+    pub fn build_with_base_url(token: &'a str, base_url: &'a str) -> Self {
+        let client = Client::new();
+        Self {
+            token,
+            client,
+            base_url,
+        }
     }
 
     endpoint_set!(daily_activity, DailyActivity, "daily_activity", DateQuery);
