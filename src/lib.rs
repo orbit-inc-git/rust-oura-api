@@ -290,7 +290,7 @@ pub enum SleepTimeRecommendation {
 #[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum SleepTimeStatus {
-    NoteEnoughNights,
+    NotEnoughNights,
     NotEnoughRecentNights,
     BadSleepQuality,
     OnlyRecommendedFound,

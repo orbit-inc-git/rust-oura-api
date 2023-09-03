@@ -1,0 +1,11 @@
+{
+  "id": "123",
+  "day": "2022-08-01",
+  "optimal_bedtime": {
+    "day_tz": 0,
+    "end_offset": 0,
+    "start_offset": 0
+  },
+  "recommendation": "improve_efficiency",
+  "status": "not_enough_nights"
+}

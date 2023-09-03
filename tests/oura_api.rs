@@ -202,3 +202,111 @@ test_endpoint! {
     ListResponse<oura_api::RingConfiguration>,
     get_empty_date_query
 }
+
+test_endpoint! {
+    it_gets_session,
+    get_session,
+    "tests/fixtures/get_session.json",
+    "/session/123",
+    oura_api::Session,
+    get_id
+}
+
+test_endpoint! {
+    it_lists_session,
+    list_session,
+    "tests/fixtures/list_session.json",
+    "/session",
+    ListResponse<oura_api::Session>,
+    get_empty_date_query
+}
+
+test_endpoint! {
+    it_gets_sleep,
+    get_sleep,
+    "tests/fixtures/get_sleep.json",
+    "/sleep/123",
+    oura_api::Sleep,
+    get_id
+}
+
+test_endpoint! {
+    it_lists_sleep,
+    list_sleep,
+    "tests/fixtures/list_sleep.json",
+    "/sleep",
+    ListResponse<oura_api::Sleep>,
+    get_empty_date_query
+}
+
+test_endpoint! {
+    it_gets_sleep_time,
+    get_sleep_time,
+    "tests/fixtures/get_sleep_time.json",
+    "/sleep_time/123",
+    oura_api::SleepTime,
+    get_id
+}
+
+test_endpoint! {
+    it_lists_sleep_time,
+    list_sleep_time,
+    "tests/fixtures/list_sleep_time.json",
+    "/sleep_time",
+    ListResponse<oura_api::SleepTime>,
+    get_empty_date_query
+}
+
+test_endpoint! {
+    it_gets_tag,
+    get_tag,
+    "tests/fixtures/get_tag.json",
+    "/tag/123",
+    oura_api::Tag,
+    get_id
+}
+
+test_endpoint! {
+    it_lists_tag,
+    list_tag,
+    "tests/fixtures/list_tag.json",
+    "/tag",
+    ListResponse<oura_api::Tag>,
+    get_empty_date_query
+}
+
+test_endpoint! {
+    it_gets_workout,
+    get_workout,
+    "tests/fixtures/get_workout.json",
+    "/workout/123",
+    oura_api::Workout,
+    get_id
+}
+
+test_endpoint! {
+    it_lists_workout,
+    list_workout,
+    "tests/fixtures/list_workout.json",
+    "/workout",
+    ListResponse<oura_api::Workout>,
+    get_empty_date_query
+}
+
+test_endpoint! {
+    it_gets_tag_v2,
+    get_tag_v2,
+    "tests/fixtures/get_tag_v2.json",
+    "/tag/v2/123",
+    oura_api::TagV2,
+    get_id
+}
+
+test_endpoint! {
+    it_lists_tag_v2,
+    list_tag_v2,
+    "tests/fixtures/list_tag_v2.json",
+    "/tag/v2",
+    ListResponse<oura_api::TagV2>,
+    get_empty_date_query
+}
