@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "id": "123",
+      "class_5_min": "1211111111111211222222333223323322222233000002333",
+      "score": 84,
+      "active_calories": 67,
+      "average_met_minutes": 1.4375,
+      "contributors": {
+        "meet_daily_targets": 60,
+        "move_every_hour": 100,
+        "recovery_time": 100,
+        "stay_active": 69,
+        "training_frequency": 96,
+        "training_volume": 96
+      },
+      "equivalent_walking_distance": 1266,
+      "high_activity_met_minutes": 0,
+      "high_activity_time": 0,
+      "inactivity_alerts": 0,
+      "low_activity_met_minutes": 47,
+      "low_activity_time": 3780,
+      "medium_activity_met_minutes": 9,
+      "medium_activity_time": 120,
+      "met": {
+        "interval": 60.0,
+        "items": [1.2, 0.9],
+        "timestamp": "2022-08-01T04:00:00.000-04:00"
+      },
+      "meters_to_target": 7700,
+      "non_wear_time": 1620,
+      "resting_time": 6240,
+      "sedentary_met_minutes": 1,
+      "sedentary_time": 3060,
+      "steps": 1276,
+      "target_calories": 450,
+      "target_meters": 10000,
+      "total_calories": 1842,
+      "day": "2023-09-01",
+      "timestamp": "2022-08-01T04:00:00-04:00"
+    }
+  ],
+  "next_token": null
+}
