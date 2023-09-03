@@ -7,6 +7,10 @@ fn get_empty_date_query() -> DateQuery<'static> {
     DateQuery::builder().build()
 }
 
+fn get_empty_datetime_query() -> oura_api::DatetimeQuery<'static> {
+    oura_api::DatetimeQuery::builder().build()
+}
+
 fn get_id() -> &'static str {
     "123"
 }
@@ -125,5 +129,76 @@ test_endpoint! {
     "tests/fixtures/list_daily_sleep.json",
     "/daily_sleep",
     ListResponse<oura_api::DailySleep>,
+    get_empty_date_query
+}
+
+test_endpoint! {
+    it_gets_daily_spo2,
+    get_daily_spo2,
+    "tests/fixtures/get_daily_spo2.json",
+    "/daily_spo2/123",
+    oura_api::DailySpO2,
+    get_id
+}
+
+test_endpoint! {
+    it_lists_daily_spo2,
+    list_daily_spo2,
+    "tests/fixtures/list_daily_spo2.json",
+    "/daily_spo2",
+    ListResponse<oura_api::DailySpO2>,
+    get_empty_date_query
+}
+
+test_endpoint! {
+    it_lists_heart_rate,
+    list_heart_rate,
+    "tests/fixtures/list_heart_rate.json",
+    "/heartrate",
+    ListResponse<oura_api::HeartRate>,
+    get_empty_datetime_query
+}
+
+test_endpoint! {
+    it_gets_personal_info,
+    get_personal_info,
+    "tests/fixtures/get_personal_info.json",
+    "/personal_info",
+    oura_api::PersonalInfo,
+}
+
+test_endpoint! {
+    it_gets_rest_mode_period,
+    get_rest_mode_period,
+    "tests/fixtures/get_read_mode_period.json",
+    "/rest_mode_period/123",
+    oura_api::RestModePeriod,
+    get_id
+}
+
+test_endpoint! {
+    it_lists_read_mode_period,
+    list_rest_mode_period,
+    "tests/fixtures/list_rest_mode_period.json",
+    "/rest_mode_period",
+    ListResponse<oura_api::RestModePeriod>,
+    get_empty_date_query
+}
+
+test_endpoint! {
+    it_gets_ring_configuration,
+    get_ring_configuration,
+    "tests/fixtures/get_ring_configuration.json",
+    "/ring_configuration/123",
+    oura_api::RingConfiguration,
+    get_id
+}
+
+test_endpoint! {
+    it_lists_ring_configuration,
+    list_ring_configuration,
+    "tests/fixtures/list_ring_configuration.json",
+    "/ring_configuration",
+    ListResponse<oura_api::RingConfiguration>,
     get_empty_date_query
 }
