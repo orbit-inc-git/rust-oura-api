@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "id": "123",
+      "day": "2022-08-01",
+      "spo2_percentage": {
+        "average": 98.358
+      }
+    }
+  ],
+  "next_token": null
+}

@@ -6,14 +6,14 @@ use typed_builder::TypedBuilder;
 
 const API_BASE_URL: &str = "https://api.ouraring.com/v2/usercollection";
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct Sample {
     pub interval: f32,
     pub items: Vec<Option<f32>>,
     pub timestamp: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct ActivityContributors {
     pub meet_daily_targets: Option<u8>,
     pub move_every_hour: Option<u8>,
@@ -23,7 +23,7 @@ pub struct ActivityContributors {
     pub training_volume: Option<u8>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct DailyActivity {
     pub id: String,
     pub class_5_min: Option<String>,
@@ -53,7 +53,7 @@ pub struct DailyActivity {
     pub timestamp: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct ReadinessContributors {
     pub activity_balance: Option<u8>,
     pub body_temperature: Option<u8>,
@@ -65,7 +65,7 @@ pub struct ReadinessContributors {
     pub sleep_balance: Option<u8>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct DailyReadiness {
     pub id: String,
     pub contributors: ReadinessContributors,
@@ -76,7 +76,7 @@ pub struct DailyReadiness {
     pub timestamp: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct SleepContributors {
     pub deep_sleep: Option<u8>,
     pub efficiency: Option<u8>,
@@ -87,7 +87,7 @@ pub struct SleepContributors {
     pub total_sleep: Option<u8>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct DailySleep {
     pub id: String,
     pub contributors: SleepContributors,
@@ -96,26 +96,26 @@ pub struct DailySleep {
     pub score: Option<u8>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct DailySpO2AggregatedValues {
     pub average: f32,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct DailySpO2 {
     pub id: String,
     pub day: String,
     pub spo2_percentage: Option<DailySpO2AggregatedValues>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct HeartRate {
     pub bpm: u8,
     pub source: String,
     pub timestamp: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct PersonalInfo {
     pub id: String,
     pub age: Option<u32>,
@@ -125,13 +125,13 @@ pub struct PersonalInfo {
     pub email: Option<String>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct RestModeEpisode {
     pub tags: Vec<String>,
     pub timestamp: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct RestModePeriod {
     pub id: String,
     pub end_day: Option<String>,
@@ -141,7 +141,7 @@ pub struct RestModePeriod {
     pub start_time: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum RingColor {
     GlossyBlack,
@@ -151,14 +151,14 @@ pub enum RingColor {
     GlossyGold,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum RingDesign {
     Heritage,
     Horizon,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum RingHardwareType {
     Gen1,
@@ -167,7 +167,7 @@ pub enum RingHardwareType {
     Gen3,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct RingConfiguration {
     pub id: String,
     pub color: Option<RingColor>,
@@ -178,7 +178,7 @@ pub struct RingConfiguration {
     pub size: Option<u32>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum MomentType {
     Breathing,
@@ -189,7 +189,7 @@ pub enum MomentType {
     BodyStatus,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum MomentMood {
     Bad,
@@ -199,7 +199,7 @@ pub enum MomentMood {
     Great,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct Session {
     pub id: String,
     pub day: String,
@@ -212,7 +212,7 @@ pub struct Session {
     pub motion_count: Option<Sample>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct ReadinessSummary {
     pub contributors: ReadinessContributors,
     pub score: Option<u8>,
@@ -220,14 +220,14 @@ pub struct ReadinessSummary {
     pub temperature_trend_deviation: Option<f32>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum SleepAlgorithmVersion {
     V1,
     V2,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum SleepType {
     Deleted,
@@ -237,7 +237,7 @@ pub enum SleepType {
     Rest,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct Sleep {
     pub id: String,
     pub average_breath: Option<f32>,
@@ -269,14 +269,14 @@ pub struct Sleep {
     pub r#type: SleepType,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct SleepTimeWindow {
     pub day_tz: u32,
     pub end_offset: u32,
     pub start_offset: u32,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum SleepTimeRecommendation {
     ImproveEfficiency,
@@ -287,17 +287,17 @@ pub enum SleepTimeRecommendation {
     FollowOptimalBedtime,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum SleepTimeStatus {
-    NoteEnoughNights,
+    NotEnoughNights,
     NotEnoughRecentNights,
     BadSleepQuality,
     OnlyRecommendedFound,
     OptimalFound,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct SleepTime {
     pub id: String,
     pub day: String,
@@ -306,7 +306,7 @@ pub struct SleepTime {
     pub status: Option<SleepTimeStatus>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct Tag {
     pub id: String,
     pub day: String,
@@ -315,7 +315,7 @@ pub struct Tag {
     pub tags: Vec<String>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum WorkoutIntensity {
     Easy,
@@ -323,7 +323,7 @@ pub enum WorkoutIntensity {
     Hard,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum WorkoutSource {
     Manual,
@@ -332,7 +332,7 @@ pub enum WorkoutSource {
     WorkoutHeartRate,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct Workout {
     pub id: String,
     pub activity: String,
@@ -346,7 +346,7 @@ pub struct Workout {
     pub start_datetime: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct TagV2 {
     pub id: String,
     pub tag_type_code: Option<String>,
@@ -377,7 +377,7 @@ pub struct DatetimeQuery<'a> {
     next_token: Option<&'a str>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, PartialEq)]
 pub struct ListResponse<T> {
     pub data: Vec<T>,
     pub next_token: Option<String>,
@@ -386,7 +386,7 @@ pub struct ListResponse<T> {
 macro_rules! generic_endpoint {
     ($name: ident, $type: ty, $path: literal) => {
         pub fn $name(&self) -> Result<$type, Box<dyn Error>> {
-            let url = format!("{}/{}", API_BASE_URL, $path);
+            let url = format!("{}/{}", &self.base_url, $path);
             let response = self
                 .client
                 .get(&url)
@@ -399,14 +399,14 @@ macro_rules! generic_endpoint {
 }
 
 macro_rules! list_endpoint {
-    ($name: ident, $type: ty, $path: literal, $params: ty) => {
-        pub fn $name(&self, params: $params) -> Result<ListResponse<$type>, Box<dyn Error>> {
-            let url = format!("{}/{}", API_BASE_URL, $path);
+    ($name: ident, $type: ty, $path: literal, $query: ty) => {
+        pub fn $name(&self, query: $query) -> Result<ListResponse<$type>, Box<dyn Error>> {
+            let url = format!("{}/{}", &self.base_url, $path);
             let response = self
                 .client
                 .get(&url)
                 .bearer_auth(&self.token)
-                .query(&params)
+                .query(&query)
                 .send()?
                 .json::<ListResponse<$type>>()?;
             Ok(response)
@@ -417,7 +417,7 @@ macro_rules! list_endpoint {
 macro_rules! get_endpoint {
     ($name: ident, $type: ty, $path: literal) => {
         pub fn $name(&self, id: &str) -> Result<$type, Box<dyn Error>> {
-            let url = format!("{}/{}/{}", API_BASE_URL, $path, id);
+            let url = format!("{}/{}/{}", &self.base_url, $path, id);
             let response = self
                 .client
                 .get(&url)
@@ -440,13 +440,27 @@ macro_rules! endpoint_set {
 
 pub struct OuraClient<'a> {
     token: &'a str,
+    base_url: &'a str,
     client: Client,
 }
 
 impl<'a> OuraClient<'a> {
-    pub fn build(token: &'a str) -> Self {
+    pub fn new(token: &'a str) -> Self {
         let client = Client::new();
-        Self { token, client }
+        Self {
+            token,
+            client,
+            base_url: API_BASE_URL,
+        }
+    }
+
+    pub fn build_with_base_url(token: &'a str, base_url: &'a str) -> Self {
+        let client = Client::new();
+        Self {
+            token,
+            client,
+            base_url,
+        }
     }
 
     endpoint_set!(daily_activity, DailyActivity, "daily_activity", DateQuery);

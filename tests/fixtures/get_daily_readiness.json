@@ -1,0 +1,18 @@
+{
+  "id": "123",
+  "contributors": {
+    "activity_balance": 79,
+    "body_temperature": 94,
+    "hrv_balance": 77,
+    "previous_day_activity": 97,
+    "previous_night": 100,
+    "recovery_index": 100,
+    "resting_heart_rate": 17,
+    "sleep_balance": 95
+  },
+  "day": "2022-08-01",
+  "score": 79,
+  "temperature_deviation": 0.13,
+  "temperature_trend_deviation": 0.01,
+  "timestamp": "2022-08-01T00:00:00+00:00"
+}
