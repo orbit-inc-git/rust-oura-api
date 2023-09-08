@@ -4,6 +4,8 @@ A client for the Oura V2 REST API, written in Rust.
 
 Documentation for the Oura V2 API is available [here](https://cloud.ouraring.com/v2/doc).
 
+The client relies on [reqwest](https://docs.rs/reqwest/latest/reqwest/) for the underlying HTTP client and [serde](https://serde.rs) for serialization and deserialization.
+
 ## Features
 
 Supports fetching following items from the Oura API and deserializing them into Rust structs:
