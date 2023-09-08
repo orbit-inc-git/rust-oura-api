@@ -5,6 +5,8 @@ edition = "2021"
 license = "MIT"
 description = "A client for the Oura V2 REST API"
 
+exclude = [".github", "tests"]
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
