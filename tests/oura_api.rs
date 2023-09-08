@@ -83,7 +83,7 @@ test_endpoint! {
     get_daily_activity,
     "tests/fixtures/get_daily_activity.json",
     "/daily_activity/123",
-    oura_api::DailyActivity,
+    oura_api::models::DailyActivity,
     get_id
 }
 
@@ -92,7 +92,7 @@ test_endpoint! {
     list_daily_activity,
     "tests/fixtures/list_daily_activity.json",
     "/daily_activity",
-    ListResponse<oura_api::DailyActivity>,
+    ListResponse<oura_api::models::DailyActivity>,
     get_empty_date_query
 }
 
@@ -101,7 +101,7 @@ test_endpoint! {
     get_daily_readiness,
     "tests/fixtures/get_daily_readiness.json",
     "/daily_readiness/123",
-    oura_api::DailyReadiness,
+    oura_api::models::DailyReadiness,
     get_id
 }
 
@@ -110,7 +110,7 @@ test_endpoint! {
     list_daily_readiness,
     "tests/fixtures/list_daily_readiness.json",
     "/daily_readiness",
-    ListResponse<oura_api::DailyReadiness>,
+    ListResponse<oura_api::models::DailyReadiness>,
     get_empty_date_query
 }
 
@@ -119,7 +119,7 @@ test_endpoint! {
     get_daily_sleep,
     "tests/fixtures/get_daily_sleep.json",
     "/daily_sleep/123",
-    oura_api::DailySleep,
+    oura_api::models::DailySleep,
     get_id
 }
 
@@ -128,7 +128,7 @@ test_endpoint! {
     list_daily_sleep,
     "tests/fixtures/list_daily_sleep.json",
     "/daily_sleep",
-    ListResponse<oura_api::DailySleep>,
+    ListResponse<oura_api::models::DailySleep>,
     get_empty_date_query
 }
 
@@ -137,7 +137,7 @@ test_endpoint! {
     get_daily_spo2,
     "tests/fixtures/get_daily_spo2.json",
     "/daily_spo2/123",
-    oura_api::DailySpO2,
+    oura_api::models::DailySpO2,
     get_id
 }
 
@@ -146,7 +146,7 @@ test_endpoint! {
     list_daily_spo2,
     "tests/fixtures/list_daily_spo2.json",
     "/daily_spo2",
-    ListResponse<oura_api::DailySpO2>,
+    ListResponse<oura_api::models::DailySpO2>,
     get_empty_date_query
 }
 
@@ -155,7 +155,7 @@ test_endpoint! {
     list_heart_rate,
     "tests/fixtures/list_heart_rate.json",
     "/heartrate",
-    ListResponse<oura_api::HeartRate>,
+    ListResponse<oura_api::models::HeartRate>,
     get_empty_datetime_query
 }
 
@@ -164,7 +164,7 @@ test_endpoint! {
     get_personal_info,
     "tests/fixtures/get_personal_info.json",
     "/personal_info",
-    oura_api::PersonalInfo,
+    oura_api::models::PersonalInfo,
 }
 
 test_endpoint! {
@@ -172,7 +172,7 @@ test_endpoint! {
     get_rest_mode_period,
     "tests/fixtures/get_read_mode_period.json",
     "/rest_mode_period/123",
-    oura_api::RestModePeriod,
+    oura_api::models::RestModePeriod,
     get_id
 }
 
@@ -181,7 +181,7 @@ test_endpoint! {
     list_rest_mode_period,
     "tests/fixtures/list_rest_mode_period.json",
     "/rest_mode_period",
-    ListResponse<oura_api::RestModePeriod>,
+    ListResponse<oura_api::models::RestModePeriod>,
     get_empty_date_query
 }
 
@@ -190,7 +190,7 @@ test_endpoint! {
     get_ring_configuration,
     "tests/fixtures/get_ring_configuration.json",
     "/ring_configuration/123",
-    oura_api::RingConfiguration,
+    oura_api::models::RingConfiguration,
     get_id
 }
 
@@ -199,7 +199,7 @@ test_endpoint! {
     list_ring_configuration,
     "tests/fixtures/list_ring_configuration.json",
     "/ring_configuration",
-    ListResponse<oura_api::RingConfiguration>,
+    ListResponse<oura_api::models::RingConfiguration>,
     get_empty_date_query
 }
 
@@ -208,7 +208,7 @@ test_endpoint! {
     get_session,
     "tests/fixtures/get_session.json",
     "/session/123",
-    oura_api::Session,
+    oura_api::models::Session,
     get_id
 }
 
@@ -217,7 +217,7 @@ test_endpoint! {
     list_session,
     "tests/fixtures/list_session.json",
     "/session",
-    ListResponse<oura_api::Session>,
+    ListResponse<oura_api::models::Session>,
     get_empty_date_query
 }
 
@@ -226,7 +226,7 @@ test_endpoint! {
     get_sleep,
     "tests/fixtures/get_sleep.json",
     "/sleep/123",
-    oura_api::Sleep,
+    oura_api::models::Sleep,
     get_id
 }
 
@@ -235,7 +235,7 @@ test_endpoint! {
     list_sleep,
     "tests/fixtures/list_sleep.json",
     "/sleep",
-    ListResponse<oura_api::Sleep>,
+    ListResponse<oura_api::models::Sleep>,
     get_empty_date_query
 }
 
@@ -244,7 +244,7 @@ test_endpoint! {
     get_sleep_time,
     "tests/fixtures/get_sleep_time.json",
     "/sleep_time/123",
-    oura_api::SleepTime,
+    oura_api::models::SleepTime,
     get_id
 }
 
@@ -253,7 +253,7 @@ test_endpoint! {
     list_sleep_time,
     "tests/fixtures/list_sleep_time.json",
     "/sleep_time",
-    ListResponse<oura_api::SleepTime>,
+    ListResponse<oura_api::models::SleepTime>,
     get_empty_date_query
 }
 
@@ -262,7 +262,7 @@ test_endpoint! {
     get_tag,
     "tests/fixtures/get_tag.json",
     "/tag/123",
-    oura_api::Tag,
+    oura_api::models::Tag,
     get_id
 }
 
@@ -271,7 +271,7 @@ test_endpoint! {
     list_tag,
     "tests/fixtures/list_tag.json",
     "/tag",
-    ListResponse<oura_api::Tag>,
+    ListResponse<oura_api::models::Tag>,
     get_empty_date_query
 }
 
@@ -280,7 +280,7 @@ test_endpoint! {
     get_workout,
     "tests/fixtures/get_workout.json",
     "/workout/123",
-    oura_api::Workout,
+    oura_api::models::Workout,
     get_id
 }
 
@@ -289,7 +289,7 @@ test_endpoint! {
     list_workout,
     "tests/fixtures/list_workout.json",
     "/workout",
-    ListResponse<oura_api::Workout>,
+    ListResponse<oura_api::models::Workout>,
     get_empty_date_query
 }
 
@@ -298,7 +298,7 @@ test_endpoint! {
     get_tag_v2,
     "tests/fixtures/get_tag_v2.json",
     "/tag/v2/123",
-    oura_api::TagV2,
+    oura_api::models::TagV2,
     get_id
 }
 
@@ -307,6 +307,6 @@ test_endpoint! {
     list_tag_v2,
     "tests/fixtures/list_tag_v2.json",
     "/tag/v2",
-    ListResponse<oura_api::TagV2>,
+    ListResponse<oura_api::models::TagV2>,
     get_empty_date_query
 }
