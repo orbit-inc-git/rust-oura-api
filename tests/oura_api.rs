@@ -48,6 +48,28 @@ fn it_applies_query_to_list_requests() {
     assert!(result.is_ok());
 }
 
+#[test]
+fn it_returns_error_for_error_status() {
+    let mut server = Server::new();
+    let base_url = server.url();
+    let client = OuraClient::build_with_base_url("token", &base_url);
+
+    let mock = server
+        .mock("GET", "/daily_activity")
+        .match_header("Authorization", "Bearer token")
+        .with_status(400)
+        .with_header("content-type", "application/json")
+        .create();
+
+    let result = client.list_daily_activity(get_empty_date_query());
+
+    mock.assert();
+    assert_eq!(
+        result.unwrap_err().status(),
+        Some(reqwest::StatusCode::BAD_REQUEST)
+    );
+}
+
 macro_rules! test_endpoint {
     ($test_name: ident, $client_function: ident, $fixture_path: literal, $url_path: literal, $type: ty, $($get_arguments: ident)?) => {
         #[test]

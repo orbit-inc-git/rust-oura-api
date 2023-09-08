@@ -68,6 +68,7 @@ macro_rules! generic_endpoint {
                 .get(&url)
                 .bearer_auth(&self.token)
                 .send()?
+                .error_for_status()?
                 .json::<$type>()?;
             Ok(response)
         }
@@ -85,6 +86,7 @@ macro_rules! list_endpoint {
                 .bearer_auth(&self.token)
                 .query(&query)
                 .send()?
+                .error_for_status()?
                 .json::<ListResponse<$type>>()?;
             Ok(response)
         }
@@ -101,6 +103,7 @@ macro_rules! get_endpoint {
                 .get(&url)
                 .bearer_auth(&self.token)
                 .send()?
+                .error_for_status()?
                 .json::<$type>()?;
             Ok(response)
         }
