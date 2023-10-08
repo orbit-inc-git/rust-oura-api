@@ -1,10 +1,12 @@
 [package]
 name = "oura-api"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 license = "MIT"
 description = "A client for the Oura V2 REST API"
+homepage = "https://github.com/cluebbehusen/rust-oura-api"
 repository = "https://github.com/cluebbehusen/rust-oura-api"
+documentation = "https://docs.rs/oura-api/latest/oura_api/"
 
 exclude = [".github", "tests"]
 
