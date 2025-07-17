@@ -22,7 +22,7 @@ pub mod models;
 use std::borrow::Cow;
 
 use paste::paste;
-use reqwest::blocking::Client;
+use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
@@ -34,22 +34,22 @@ const API_BASE_URL: &str = "https://api.ouraring.com/v2/usercollection";
 #[derive(Serialize, TypedBuilder)]
 pub struct DateQuery<'a> {
     #[builder(default = None, setter(strip_option))]
-    start_date: Option<&'a str>,
+    start_date: Option<Cow<'a, str>>,
     #[builder(default = None, setter(strip_option))]
-    end_date: Option<&'a str>,
+    end_date: Option<Cow<'a, str>>,
     #[builder(default = None, setter(strip_option))]
-    next_token: Option<&'a str>,
+    next_token: Option<Cow<'a, str>>,
 }
 
 /// Query parameters for endpoints that accept a datetime range.
 #[derive(Serialize, TypedBuilder)]
 pub struct DatetimeQuery<'a> {
     #[builder(default = None, setter(strip_option))]
-    start_datetime: Option<&'a str>,
+    start_datetime: Option<Cow<'a, str>>,
     #[builder(default = None, setter(strip_option))]
-    end_datetime: Option<&'a str>,
+    end_datetime: Option<Cow<'a, str>>,
     #[builder(default = None, setter(strip_option))]
-    next_token: Option<&'a str>,
+    next_token: Option<Cow<'a, str>>,
 }
 
 /// Response from endpoints that return a list of items.
@@ -64,33 +64,33 @@ pub struct ListResponse<T> {
 macro_rules! generic_endpoint {
     ($(#[$m:meta])*, $name: ident, $type: ty, $path: literal) => {
         $(#[$m])*
-        pub fn $name(&self) -> Result<$type, reqwest::Error> {
+        pub async fn $name(&self) -> Result<$type, reqwest::Error> {
             let url = format!("{}/{}", &self.base_url, $path);
             let response = self
                 .client
                 .get(&url)
                 .bearer_auth(&self.token)
-                .send()?
+                .send().await?
                 .error_for_status()?
-                .json::<$type>()?;
+                .json::<$type>().await?;
             Ok(response)
         }
     };
 }
 
 macro_rules! list_endpoint {
-    ($(#[$m:meta])*, $name: ident, $type: ty, $path: literal, $query: ty) => {
+    ($(#[$m:meta])*, $name: ident, $type: ty, $path: literal, $query: tt) => {
         $(#[$m])*
-        pub fn $name(&self, query: $query) -> Result<ListResponse<$type>, reqwest::Error> {
+        pub async fn $name<'l>(&self, query: $query<'l>) -> Result<ListResponse<$type>, reqwest::Error> {
             let url = format!("{}/{}", &self.base_url, $path);
             let response = self
                 .client
                 .get(&url)
                 .bearer_auth(&self.token)
                 .query(&query)
-                .send()?
+                .send().await?
                 .error_for_status()?
-                .json::<ListResponse<$type>>()?;
+                .json::<ListResponse<$type>>().await?;
             Ok(response)
         }
     };
@@ -99,15 +99,15 @@ macro_rules! list_endpoint {
 macro_rules! get_endpoint {
     ($(#[$m:meta])*, $name: ident, $type: ty, $path: literal) => {
         $(#[$m])*
-        pub fn $name(&self, id: &str) -> Result<$type, reqwest::Error> {
+        pub async fn $name(&self, id: &str) -> Result<$type, reqwest::Error> {
             let url = format!("{}/{}/{}", &self.base_url, $path, id);
             let response = self
                 .client
                 .get(&url)
                 .bearer_auth(&self.token)
-                .send()?
+                .send().await?
                 .error_for_status()?
-                .json::<$type>()?;
+                .json::<$type>().await?;
             Ok(response)
         }
     };
