@@ -7,16 +7,19 @@
 //! ## Usage
 //! ```no_run
 //! use oura_api::{OuraClient, DateQuery};
+//! use std::borrow::Cow;
 //!
 //! // token is the personal access token for the Oura API
 //! let token = std::env::var("OURA_PERSONAL_ACCESS_TOKEN").unwrap();
-//! let client = OuraClient::new(&token);
+//! let client = OuraClient::new(Cow::Borrowed(&token));
 //!
 //! let august_date_query = DateQuery::builder().start_date("2023-08-01").end_date("2023-08-31").build();
 //! let august_daily_sleep = client.list_daily_sleep(august_date_query).unwrap();
 //! ```
 
 pub mod models;
+
+use std::borrow::Cow;
 
 use paste::paste;
 use reqwest::blocking::Client;
@@ -123,26 +126,26 @@ macro_rules! endpoint_set {
 ///
 /// This client is used to make requests to the Oura API.
 pub struct OuraClient<'a> {
-    token: &'a str,
-    base_url: &'a str,
+    token: Cow<'a, str>,
+    base_url: Cow<'a, str>,
     client: Client,
 }
 
 impl<'a> OuraClient<'a> {
     /// Creates a new OuraClient from a personal access token.
-    pub fn new(token: &'a str) -> Self {
+    pub fn new(token: Cow<'a, str>) -> Self {
         let client = Client::new();
         Self {
             token,
             client,
-            base_url: API_BASE_URL,
+            base_url: Cow::Borrowed(API_BASE_URL),
         }
     }
 
     /// Creates a new OuraClient from a personal access token and a base URL.
     ///
     /// *Note:* This is only useful for testing against a mock server.
-    pub fn build_with_base_url(token: &'a str, base_url: &'a str) -> Self {
+    pub fn build_with_base_url(token: Cow<'a, str>, base_url: Cow<'a, str>) -> Self {
         let client = Client::new();
         Self {
             token,

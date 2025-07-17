@@ -1,3 +1,5 @@
+use std::borrow::Cow;
+
 use mockito::{Matcher, Server};
 use serde_json;
 
@@ -19,7 +21,7 @@ fn get_id() -> &'static str {
 fn it_applies_query_to_list_requests() {
     let mut server = Server::new();
     let base_url = server.url();
-    let client = OuraClient::build_with_base_url("token", &base_url);
+    let client = OuraClient::build_with_base_url(Cow::Borrowed(&"token"), Cow::Borrowed(&base_url));
 
     let fixture = std::fs::read_to_string("tests/fixtures/list_daily_activity.json").unwrap();
 
@@ -52,7 +54,7 @@ fn it_applies_query_to_list_requests() {
 fn it_returns_error_for_error_status() {
     let mut server = Server::new();
     let base_url = server.url();
-    let client = OuraClient::build_with_base_url("token", &base_url);
+    let client = OuraClient::build_with_base_url(Cow::Borrowed(&"token"), Cow::Borrowed(&base_url));
 
     let mock = server
         .mock("GET", "/daily_activity")
@@ -76,7 +78,7 @@ macro_rules! test_endpoint {
         fn $test_name() {
             let mut server = Server::new();
             let base_url = server.url();
-            let client = OuraClient::build_with_base_url("token", &base_url);
+            let client = OuraClient::build_with_base_url(Cow::Borrowed("token"), Cow::Borrowed(&base_url));
 
             let fixture = std::fs::read_to_string($fixture_path).unwrap();
 
