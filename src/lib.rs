@@ -28,7 +28,7 @@ use typed_builder::TypedBuilder;
 
 use crate::models::*;
 
-pub type Error = reqwest::Error;
+pub use reqwest;
 
 const API_BASE_URL: &str = "https://api.ouraring.com/v2/usercollection";
 
@@ -66,7 +66,7 @@ pub struct ListResponse<T> {
 macro_rules! generic_endpoint {
     ($(#[$m:meta])*, $name: ident, $type: ty, $path: literal) => {
         $(#[$m])*
-        pub async fn $name(&self) -> Result<$type, Error> {
+        pub async fn $name(&self) -> Result<$type, reqwest::Error> {
             let url = format!("{}/{}", &self.base_url, $path);
             let response = self
                 .client
@@ -83,7 +83,7 @@ macro_rules! generic_endpoint {
 macro_rules! list_endpoint {
     ($(#[$m:meta])*, $name: ident, $type: ty, $path: literal, $query: tt) => {
         $(#[$m])*
-        pub async fn $name<'l>(&self, query: $query<'l>) -> Result<ListResponse<$type>, Error> {
+        pub async fn $name<'l>(&self, query: $query<'l>) -> Result<ListResponse<$type>, reqwest::Error> {
             let url = format!("{}/{}", &self.base_url, $path);
             let response = self
                 .client
@@ -101,7 +101,7 @@ macro_rules! list_endpoint {
 macro_rules! get_endpoint {
     ($(#[$m:meta])*, $name: ident, $type: ty, $path: literal) => {
         $(#[$m])*
-        pub async fn $name(&self, id: &str) -> Result<$type, Error> {
+        pub async fn $name(&self, id: &str) -> Result<$type, reqwest::Error> {
             let url = format!("{}/{}/{}", &self.base_url, $path, id);
             let response = self
                 .client
